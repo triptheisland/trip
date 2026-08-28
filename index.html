@@ -3,18 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trip The Island</title>
+    <title>Trip The Island | Jakor</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* Tema Pantai: Gradasi biru laut cerah */
-            --bg-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            /* Warna khusus ombak SVG yang sesuai dengan gradasi */
-            --wave-color: #a8edea; 
             --text-color: #1a1a1a;
-            --card-bg: rgba(255, 255, 255, 0.85); /* Semi-transparan agar gradasi terlihat */
+            --glass-bg: rgba(255, 255, 255, 0.45); /* Latar belakang kaca */
+            --glass-border: rgba(255, 255, 255, 0.6);
         }
 
         * {
@@ -25,8 +22,11 @@
         }
 
         body {
-            /* Menggunakan gambar atau gradasi. Di sini kita pakai gradasi lembut */
-            background: linear-gradient(to bottom, #d4fc79 0%, #96e6a1 100%);
+            /* Latar belakang pemandangan pulau/pantai full screen */
+            background-image: url('https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             color: var(--text-color);
             display: flex;
             justify-content: center;
@@ -36,10 +36,16 @@
         .container {
             width: 100%;
             max-width: 480px; 
-            background: linear-gradient(180deg, #e0f7fa 0%, #b2ebf2 100%);
+            /* Efek Glassmorphism (Kaca) */
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-left: 1px solid var(--glass-border);
+            border-right: 1px solid var(--glass-border);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
             position: relative;
             padding-bottom: 50px;
-            overflow: hidden; /* Mencegah ombak keluar wadah */
+            overflow: hidden; 
         }
 
         /* --- 1. SLIDER GAMBAR ATAS --- */
@@ -63,12 +69,24 @@
             scroll-snap-align: start; 
             background-size: cover;
             background-position: center;
+            position: relative;
+        }
+        
+        /* Bayangan tipis di atas gambar slider agar menyatu dengan ombak */
+        .slide-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(to top, rgba(255,255,255,0.4), transparent);
         }
 
         /* --- OMBAK BERGERAK (Wave Animation) --- */
         .wave-container {
             position: absolute;
-            top: 230px; /* Sedikit di bawah garis banner */
+            top: 230px; 
             left: 0;
             width: 100%;
             overflow: hidden;
@@ -81,11 +99,11 @@
             display: block;
             width: calc(200% + 1.3px);
             height: 50px;
-            animation: moveWave 6s linear infinite; /* Animasi bergeser ke kiri */
+            animation: moveWave 6s linear infinite; 
         }
         
         .wave-container .shape-fill {
-            fill: #e0f7fa; /* Warna yang sama dengan batas atas gradient container */
+            fill: rgba(255, 255, 255, 0.65); /* Warna buih ombak putih semi transparan */
         }
 
         @keyframes moveWave {
@@ -96,23 +114,22 @@
         /* --- 2. PROFIL & BIO --- */
         .profile-section {
             text-align: center;
-            margin-top: -30px; /* Disesuaikan agar pas dengan ombak */
+            margin-top: -30px; 
             position: relative;
             z-index: 10;
             padding: 0 20px;
             animation: fadeInDown 0.8s ease-out;
         }
         
-        /* Animasi mengapung (Floating) pada Foto Profil */
         .profile-img {
-            width: 110px;
-            height: 110px;
+            width: 115px;
+            height: 115px;
             border-radius: 50%;
-            border: 4px solid white; 
+            border: 4px solid rgba(255, 255, 255, 0.9); 
             object-fit: cover;
             background-color: white;
-            box-shadow: 0 8px 20px rgba(0, 150, 136, 0.2); /* Bayangan bernuansa laut */
-            animation: float 3s ease-in-out infinite; /* Efek mengapung */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); 
+            animation: float 3s ease-in-out infinite; 
         }
 
         @keyframes float {
@@ -122,17 +139,19 @@
         }
 
         .username {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin: 15px 0 5px 0;
-            color: #00695c; /* Warna teks gelap bernuansa laut */
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 15px 0 2px 0;
+            color: #004d40; /* Hijau tosca gelap agar kontras */
+            text-shadow: 0 2px 5px rgba(255,255,255,0.8);
         }
         .bio-text {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             line-height: 1.6;
-            color: #4db6ac;
-            font-weight: 500;
+            color: #00695c;
+            font-weight: 600;
             margin-bottom: 25px;
+            text-shadow: 0 1px 3px rgba(255,255,255,0.5);
         }
 
         /* --- 3. SUSUNAN LINK KONTEN --- */
@@ -148,24 +167,21 @@
         .link-card {
             display: flex;
             align-items: center;
-            background-color: var(--card-bg); /* Menggunakan warna semi transparan */
-            padding: 15px 20px;
-            border-radius: 15px; /* Lebih membulat (modern) */
+            background-color: rgba(255, 255, 255, 0.85); /* Putih bersih agak transparan */
+            padding: 16px 20px;
+            border-radius: 16px; 
             text-decoration: none;
             color: #2c3e50;
             font-weight: 600;
-            box-shadow: 0 4px 15px rgba(0, 150, 136, 0.1);
-            border: 1px solid rgba(255,255,255,0.6);
-            backdrop-filter: blur(5px); /* Efek kaca kekinian (glassmorphism) */
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Transisi lebih mantul */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             
-            /* Animasi masuk dari bawah secara bergantian */
             opacity: 0;
             transform: translateY(30px);
             animation: slideUpFade 0.6s forwards;
         }
 
-        /* Delay animasi agar muncul bergantian */
         .link-card:nth-child(1) { animation-delay: 0.1s; }
         .link-card:nth-child(2) { animation-delay: 0.2s; }
         .link-card:nth-child(3) { animation-delay: 0.3s; }
@@ -176,10 +192,9 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* Efek saat disentuh */
         .link-card:hover {
-            transform: scale(1.03) translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 150, 136, 0.2);
+            transform: scale(1.03) translateY(-4px);
+            box-shadow: 0 12px 25px rgba(0, 77, 64, 0.15);
             background-color: #ffffff;
         }
 
@@ -191,9 +206,8 @@
             transition: transform 0.3s ease;
         }
 
-        /* Ikon berputar sedikit saat di-hover */
         .link-card:hover img {
-            transform: rotate(-10deg) scale(1.1);
+            transform: rotate(-10deg) scale(1.15);
         }
 
         /* Aksen Warna Samping */
@@ -207,8 +221,9 @@
             text-align: center;
             margin-top: 50px;
             font-size: 0.85rem;
-            color: #00796b;
-            font-weight: 500;
+            color: #004d40;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(255,255,255,0.5);
         }
 
         @keyframes fadeInDown {
@@ -224,16 +239,15 @@
         <div class="banner-slider">
             <div class="slide-item" style="background-image: url('img/pamutusan.png');"></div>
             <div class="slide-item" style="background-image: url('img/pasumpahan.png');"></div>
-            <!-- Menggunakan gambar pulau mandeh sebagai default -->
+            <!-- Menggunakan gambar laut/pulau dari Unsplash sebagai default tambahan -->
             <div class="slide-item" style="background-image: url('https://images.unsplash.com/photo-1544644181-1484b3fdfc62?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
         </div>
 
         <!-- EFEK OMBAK BERGERAK -->
         <div class="wave-container">
             <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                <!-- Membentuk dua gelombang berdampingan agar bisa berulang mulus -->
-                <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="shape-fill"></path>
-                <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="shape-fill"></path>
+                <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".35" class="shape-fill"></path>
+                <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".6" class="shape-fill"></path>
                 <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" class="shape-fill"></path>
             </svg>
         </div>
@@ -259,10 +273,10 @@
                 <span>Follow Instagram Kami</span>
             </a>
             
-           <a href="https://www.tiktok.com/@triptheisland6?_r=1&_t=ZS-99GOmHWiHYK" class="link-card tt-card" target="_blank">
-               <img src="img/tiktok.png" alt="TikTok">
-               <span>Tonton TikTok Kami</span>
-           </a>
+            <a href="https://www.tiktok.com/@triptheisland6?_r=1&_t=ZS-99GOmHWiHYK" class="link-card tt-card" target="_blank">
+                <img src="img/tiktok.png" alt="TikTok">
+                <span>Tonton TikTok Kami</span>
+            </a>
             
             <a href="https://facebook.com/" class="link-card fb-card" target="_blank">
                 <img src="img/facebooklogobawah.png" alt="Facebook">
