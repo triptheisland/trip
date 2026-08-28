@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jakor | Trip The Island</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Tema Pantai: Gradasi biru laut cerah */
+            --bg-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            /* Warna khusus ombak SVG yang sesuai dengan gradasi */
+            --wave-color: #a8edea; 
+            --text-color: #1a1a1a;
+            --card-bg: rgba(255, 255, 255, 0.85); /* Semi-transparan agar gradasi terlihat */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            /* Menggunakan gambar atau gradasi. Di sini kita pakai gradasi lembut */
+            background: linear-gradient(to bottom, #d4fc79 0%, #96e6a1 100%);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px; 
+            background: linear-gradient(180deg, #e0f7fa 0%, #b2ebf2 100%);
+            position: relative;
+            padding-bottom: 50px;
+            overflow: hidden; /* Mencegah ombak keluar wadah */
+        }
+
+        /* --- 1. SLIDER GAMBAR ATAS --- */
+        .banner-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory; 
+            scrollbar-width: none; 
+            -ms-overflow-style: none; 
+            height: 250px;
+            background-color: #e0e0e0;
+            position: relative;
+            z-index: 1;
+        }
+        .banner-slider::-webkit-scrollbar {
+            display: none; 
+        }
+        .slide-item {
+            flex: 0 0 100%; 
+            height: 100%;
+            scroll-snap-align: start; 
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* --- OMBAK BERGERAK (Wave Animation) --- */
+        .wave-container {
+            position: absolute;
+            top: 230px; /* Sedikit di bawah garis banner */
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            z-index: 2;
+        }
+        
+        .wave-container svg {
+            position: relative;
+            display: block;
+            width: calc(200% + 1.3px);
+            height: 50px;
+            animation: moveWave 6s linear infinite; /* Animasi bergeser ke kiri */
+        }
+        
+        .wave-container .shape-fill {
+            fill: #e0f7fa; /* Warna yang sama dengan batas atas gradient container */
+        }
+
+        @keyframes moveWave {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* --- 2. PROFIL & BIO --- */
+        .profile-section {
+            text-align: center;
+            margin-top: -30px; /* Disesuaikan agar pas dengan ombak */
+            position: relative;
+            z-index: 10;
+            padding: 0 20px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+        
+        /* Animasi mengapung (Floating) pada Foto Profil */
+        .profile-img {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            border: 4px solid white; 
+            object-fit: cover;
+            background-color: white;
+            box-shadow: 0 8px 20px rgba(0, 150, 136, 0.2); /* Bayangan bernuansa laut */
+            animation: float 3s ease-in-out infinite; /* Efek mengapung */
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .username {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 15px 0 5px 0;
+            color: #00695c; /* Warna teks gelap bernuansa laut */
+        }
+        .bio-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #4db6ac;
+            font-weight: 500;
+            margin-bottom: 25px;
+        }
+
+        /* --- 3. SUSUNAN LINK KONTEN --- */
+        .main-links {
+            display: flex;
+            flex-direction: column; 
+            gap: 15px; 
+            padding: 0 25px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .link-card {
+            display: flex;
+            align-items: center;
+            background-color: var(--card-bg); /* Menggunakan warna semi transparan */
+            padding: 15px 20px;
+            border-radius: 15px; /* Lebih membulat (modern) */
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 150, 136, 0.1);
+            border: 1px solid rgba(255,255,255,0.6);
+            backdrop-filter: blur(5px); /* Efek kaca kekinian (glassmorphism) */
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Transisi lebih mantul */
+            
+            /* Animasi masuk dari bawah secara bergantian */
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideUpFade 0.6s forwards;
+        }
+
+        /* Delay animasi agar muncul bergantian */
+        .link-card:nth-child(1) { animation-delay: 0.1s; }
+        .link-card:nth-child(2) { animation-delay: 0.2s; }
+        .link-card:nth-child(3) { animation-delay: 0.3s; }
+        .link-card:nth-child(4) { animation-delay: 0.4s; }
+        .link-card:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes slideUpFade {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Efek saat disentuh */
+        .link-card:hover {
+            transform: scale(1.03) translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 150, 136, 0.2);
+            background-color: #ffffff;
+        }
+
+        .link-card img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            margin-right: 18px; 
+            transition: transform 0.3s ease;
+        }
+
+        /* Ikon berputar sedikit saat di-hover */
+        .link-card:hover img {
+            transform: rotate(-10deg) scale(1.1);
+        }
+
+        /* Aksen Warna Samping */
+        .wa-card { border-left: 6px solid #25D366; }
+        .ig-card { border-left: 6px solid #E1306C; }
+        .tt-card { border-left: 6px solid #000000; }
+        .fb-card { border-left: 6px solid #1877F2; }
+        .yt-card { border-left: 6px solid #FF0000; }
+        
+        .footer-text {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 0.85rem;
+            color: #00796b;
+            font-weight: 500;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 1. SLIDER GAMBAR -->
+        <div class="banner-slider">
+            <div class="slide-item" style="background-image: url('img/pamutusan.png');"></div>
+            <div class="slide-item" style="background-image: url('img/pasumpahan.png');"></div>
+            <!-- Menggunakan gambar pulau mandeh sebagai default -->
+            <div class="slide-item" style="background-image: url('https://images.unsplash.com/photo-1544644181-1484b3fdfc62?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+        </div>
+
+        <!-- EFEK OMBAK BERGERAK -->
+        <div class="wave-container">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <!-- Membentuk dua gelombang berdampingan agar bisa berulang mulus -->
+                <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="shape-fill"></path>
+                <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" class="shape-fill"></path>
+                <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" class="shape-fill"></path>
+            </svg>
+        </div>
+
+        <!-- 2. PROFIL & BIO -->
+        <div class="profile-section">
+            <img src="img/logo.png" alt="Logo Jakor" class="profile-img">
+            <h1 class="username">Trip The Island</h1>
+            <p class="bio-text">
+                🏝️ Wisata Pulau Mandeh<br>
+            </p>
+        </div>
+
+        <!-- 3. KONTEN BAWAH (5 Link Utama) -->
+        <div class="main-links">
+            <a href="https://wa.me/6285282434054" class="link-card wa-card" target="_blank">
+                <img src="img/whatsapp.png" alt="WhatsApp">
+                <span>Hubungi Admin (WhatsApp)</span>
+            </a>
+            
+            <a href="https://instagram.com/" class="link-card ig-card" target="_blank">
+                <img src="img/iglogobawah.png" alt="Instagram">
+                <span>Follow Instagram Kami</span>
+            </a>
+            
+            <a href="https://www.tiktok.com/@jakor.coffeeandeatry?_t=ZS-8uhmp3uGZHB&_r=1" class="link-card tt-card" target="_blank">
+                <img src="img/tiktok.png" alt="TikTok">
+                <span>Tonton TikTok Kami</span>
+            </a>
+            
+            <a href="https://facebook.com/" class="link-card fb-card" target="_blank">
+                <img src="img/facebooklogobawah.png" alt="Facebook">
+                <span>Kunjungi Facebook</span>
+            </a>
+            
+            <a href="https://youtube.com/" class="link-card yt-card" target="_blank">
+                <img src="img/ytlogobawah.png" alt="YouTube">
+                <span>Subscribe YouTube</span>
+            </a>
+        </div>
+
+        <div class="footer-text">
+            made with <strong>Badul</strong>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

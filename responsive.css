@@ -1,0 +1,9 @@
+@media (max-width: 600px) {
+    .container {
+        width: 90%;
+    }
+
+    .links .link {
+        font-size: 14px;
+    }
+}
